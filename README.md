@@ -1,2 +1,13 @@
 # CODE-REFACTORING-AND-PERFORMANCE-OPTIMIZATION
-Core refactoring phase for performance and code quality. Optimized an existing codebase to enhance readability, boost network efficiency, and improve overall system responsiveness. Focus on best practices and maintainable architecture.
+
+*COMPANY NAME*: CODTECH IT SOLUTIONS PVT.LTD
+
+*NAME*: SAIMON SHAIKH
+
+*INTERN ID*: CT06DR437
+
+*DOMAIN NAME*: SOFTWARE DEVELOPMENT
+
+*DURATION*: 6 WEEKS
+
+*MENTOR NAME*: NEELA SANTOSH
