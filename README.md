@@ -135,6 +135,8 @@ The refactoring process involved a complete overhaul of the code's structure and
 * **Problem Before Refactoring:** The original code had a fatal flaw in the `update_entry` function, causing updates to silently fail because a comparison operator was used instead of an assignment operator.
 
   <img width="817" height="116" alt="Image" src="https://github.com/user-attachments/assets/5ad818e9-ab0e-4992-8469-03146d3ef113" />
+
+  <img width="817" height="76" alt="Image" src="https://github.com/user-attachments/assets/024a3776-3485-4100-9c78-cbb5de7993a4" />
   
 * **Problem Snippet (Before Fix):**
     ```python
@@ -145,6 +147,8 @@ The refactoring process involved a complete overhaul of the code's structure and
 * **Refactored Solution:** The code was fixed to use the correct assignment operator (`=`) and was encapsulated within the `UserDatabase.update_user` method.
 
   <img width="817" height="304" alt="Image" src="https://github.com/user-attachments/assets/35b21e8f-e10e-4c0d-ad9b-d2a529a7aeb8" />
+
+  <img width="817" height="140" alt="Image" src="https://github.com/user-attachments/assets/d8482db9-b9ec-42d2-ab5b-7975b6e801c7" />
 
 * **Solution Snippet (After Fix):**
     ```python
