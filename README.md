@@ -56,7 +56,13 @@ This project proves competency in identifying and eliminating technical debt, re
 * `typing` module
 
 #  OUTPUT
-  
+
+<img width="562" height="644" alt="Image" src="https://github.com/user-attachments/assets/4b91bff1-7070-4a27-862e-16bc863ec09e" />
+
+<img width="562" height="774" alt="Image" src="https://github.com/user-attachments/assets/933f412b-f21a-4f40-83fc-1b0223e8317a" />
+
+<img width="562" height="681" alt="Image" src="https://github.com/user-attachments/assets/54a92424-3f44-4d98-9eb4-8e577eb9313b" />
+
 ---------
 
 # CODE REFACTORING AND PERFORMANCE OPTIMIZATION REPORT
