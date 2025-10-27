@@ -16,7 +16,9 @@
 
 # Code Refactoring and Performance Optimization Report
 **Project Name**: User Management System (Python Script)
+
 **Original Source**: [GitHub Respository Link](https://github.com/itsallaboutpython/Top-10-Easy-Python-Project-Ideas-For-Beginners/blob/main/user_management_system.py)
+
 **Objective**: Improve code readability, maintainability, and data access performance.
 
 ## 1. Introduction
@@ -40,13 +42,11 @@ The refactoring process involved a complete overhaul of the code's structure and
 * **Data Integrity:** Implemented Python’s built-in **`@dataclass`** and used **type hinting** to enforce data structures.
 * **Critical Bug Fix:** Corrected the logical error in the update function, changing the comparison operator (`==`) to the assignment operator (`=`).
 * **Input Validation & Robustness:** Added `try/except` blocks for user input (age, menu choices) and handled edge cases such as searching for non-existent users.
-* **Readability:** Eliminated unnecessary global constants, improved variable naming (PEP 8 compliance), and enhanced the user experience with clearer console output and status indicators (e.g., `✅`, `⚠️`).
+* **Readability:** Eliminated unnecessary global constants, improved variable naming (PEP 8 compliance), and enhanced the user experience with clearer console output and status indicators.
 
 ***
 
 ## 3. Detailed Analysis
-
-This section breaks down the three most significant improvements contributing to the final deliverable.
 
 ### 3.1. Structural Modularization (Separation of Concerns)
 
