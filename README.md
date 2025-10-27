@@ -157,6 +157,8 @@ The refactoring process involved a complete overhaul of the code's structure and
     ```
 
 * **Justification:** This change ensures **proper data consistency and reliability**. Additionally, validation was added to ensure fields like `age` are always converted to the correct `int` type, preventing runtime errors.
+* The original code accepted all user inputs as plain strings, which often caused runtime errors (e.g., entering text instead of numbers) and allowed invalid data to be stored. The refactored version adds **type safety** using a `User` dataclass and applies **input validation** through `try/except` blocks. This ensures that only valid, correctly typed data is processed, preventing crashes and maintaining data consistency. 
+
 
 ***
 
