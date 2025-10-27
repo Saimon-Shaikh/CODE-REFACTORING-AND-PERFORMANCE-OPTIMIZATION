@@ -61,6 +61,8 @@ This project proves competency in identifying and eliminating technical debt, re
 
 <img width="500" height="500" alt="Image" src="https://github.com/user-attachments/assets/933f412b-f21a-4f40-83fc-1b0223e8317a" />
 
+<img width="500" height="500" alt="Image" src="https://github.com/user-attachments/assets/48029642-9555-4624-86dc-2f0e72f14bcb" />
+
 <img width="500" height="500" alt="Image" src="https://github.com/user-attachments/assets/54a92424-3f44-4d98-9eb4-8e577eb9313b" />
 
 ---------
