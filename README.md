@@ -99,7 +99,7 @@ The refactoring process involved a complete overhaul of the code's structure and
   
 * **Refactored Solution:** The application was split into distinct OOP modules: a **Data Model** (`User` dataclass), a **Database Layer** (`UserDatabase`), and an **UI Layer**. The global state was eliminated.
 
-  
+  <img width="817" height="372" alt="Image" src="https://github.com/user-attachments/assets/0507a91f-0fd1-4e9d-86c6-25e540cb03bf" />
 
 * **Justification:** This OOP structure significantly lowers **cyclomatic complexity** and improves **maintainability**. Any future change is localized to the relevant class, making the code scalable and easier to manage.
 
