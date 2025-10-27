@@ -57,7 +57,7 @@ This project proves competency in identifying and eliminating technical debt, re
   
 ---------
 
-# Code Refactoring and Performance Optimization Report
+# CODE REFACTORING AND PERFORMANCE OPTIMIZATION REPORT
 **Project Name**: User Management System (Python Script)
 
 **Original Source**: [GitHub Respository Link](https://github.com/itsallaboutpython/Top-10-Easy-Python-Project-Ideas-For-Beginners/blob/main/user_management_system.py)
