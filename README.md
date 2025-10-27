@@ -136,6 +136,12 @@ The refactoring process involved a complete overhaul of the code's structure and
 
   <img width="817" height="116" alt="Image" src="https://github.com/user-attachments/assets/5ad818e9-ab0e-4992-8469-03146d3ef113" />
 
+* The original code accepted all user inputs as raw strings without validation or type enforcement. This caused multiple issues:
+
+- Entering non-numeric values for fields like age or menu choices would raise runtime errors (`ValueError`), crashing the program.
+- Invalid or inconsistent data (e.g., empty names, negative ages) could be added to the database.
+- Users received no feedback when entering incorrect data, making the system error-prone and difficult to use.
+
   <img width="817" height="76" alt="Image" src="https://github.com/user-attachments/assets/024a3776-3485-4100-9c78-cbb5de7993a4" />
   
 * **Problem Snippet (Before Fix):**
