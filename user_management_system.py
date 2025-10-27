@@ -1,134 +1,233 @@
-# Code Link: https://github.com/itsallaboutpython/Top-10-Easy-Python-Project-Ideas-For-Beginners/blob/main/user_management_system.py
-database = {'entries': []}
+"""
+Final Refactored and Optimized User Management System for Task 4.
 
-SRNO = 'srno'
-NAME = 'name'
-AGE = 'age'
-GENDER = 'gender'
-OCCUPATION = 'occupation'
+Key Optimization: Implements an O(1) hash map lookup (self.srno_index) 
+for all unique serial number searches, drastically improving performance 
+for update and delete operations on large datasets.
+"""
+from dataclasses import dataclass, asdict
+from typing import List, Optional, Dict, Any
 
-def get_serial_no():
-    return len(database['entries']) + 1
+# -----------------------------
+# Data Model
+# -----------------------------
+@dataclass
+class User:
+    srno: int
+    name: str
+    age: int
+    gender: str
+    occupation: str
 
-def add_entry(entry):
-    entry = {
-        'srno': get_serial_no(),
-        'name': entry['name'],
-        'age': entry['age'],
-        'gender': entry['gender'],
-        'occupation': entry['occupation']
+
+# -----------------------------
+# Database Layer (Optimized)
+# -----------------------------
+class UserDatabase:
+    def __init__(self):
+        # Primary storage: list for iteration/display (O(n) display)
+        self.entries: List[User] = []
+        
+        # Performance Optimization: Dictionary for O(1) lookup by srno
+        self.srno_index: Dict[int, User] = {} 
+
+    def _get_next_srno(self) -> int:
+        return len(self.entries) + 1
+
+    def add_user(self, name: str, age: Any, gender: str, occupation: str) -> None:
+        try:
+            # Robustness: Ensure age is an integer
+            age_int = int(age)
+        except ValueError:
+            print("Error: Age must be a valid number. Entry aborted.")
+            return
+
+        user = User(
+            srno=self._get_next_srno(), 
+            name=name, 
+            age=age_int, 
+            gender=gender, 
+            occupation=occupation
+        )
+        
+        # Add to both data structures
+        self.entries.append(user)
+        self.srno_index[user.srno] = user
+        
+
+    def find_user(self, key: str, value: str) -> Optional[User]:
+        # O(1) Performance Optimization for unique ID search
+        if key == 'srno':
+            try:
+                srno_val = int(value)
+                return self.srno_index.get(srno_val)
+            except ValueError:
+                return None # Invalid srno format
+
+        # Fallback to O(n) linear search for non-indexed fields
+        for entry in self.entries:
+            # Robustness: Use getattr and case-insensitive comparison
+            entry_value = str(getattr(entry, key, '')).lower()
+            if entry_value == str(value).lower():
+                return entry
+        return None
+
+    def update_user(self, key: str, value: str, new_data: dict) -> bool:
+        # Find user using optimized method
+        user = self.find_user(key, value)
+        
+        if user:
+            for field, val in new_data.items():
+                if field == 'age':
+                    try:
+                        val = int(val)
+                    except ValueError:
+                        print("Error: Update failed. Age must be a valid number.")
+                        return False
+                
+                # Update the attribute on the User object
+                setattr(user, field, val)
+                
+            # Note: srno and srno_index do not need modification 
+            # because the User object reference is preserved.
+            return True
+        return False
+
+    def delete_user(self, key: str, value: str) -> bool:
+        # Find user using optimized method
+        user = self.find_user(key, value)
+        
+        if user:
+            # Remove from both structures for consistency (O(1) removal from index)
+            self.entries.remove(user) # O(n) removal from list, but less frequent than search
+            del self.srno_index[user.srno] # O(1) removal from dictionary
+            return True
+        return False
+
+    def display_all(self):
+        """Displays all users, using the simple list for iteration."""
+        if not self.entries:
+            print("No users found in database.")
+            return
+            
+        print(f"\n===== Displaying All {len(self.entries)} Users =====")
+        for user in self.entries:
+            self.display_user(user)
+        print("=" * 43)
+
+    @staticmethod
+    def display_user(user: User):
+        """Displays a single user's details."""
+        print("-" * 30)
+        # asdict is used for clean, automatic display
+        for key, val in asdict(user).items():
+            print(f"{key.capitalize()}: {val}")
+        print("-" * 30)
+
+
+# -----------------------------
+# User Interface Layer
+# -----------------------------
+def get_user_input() -> Dict[str, str]:
+    """Collects user input as a dictionary of strings."""
+    return {
+        "name": input("Enter name: ").strip(),
+        "age": input("Enter age: ").strip(), # Stays as string for later validation
+        "gender": input("Enter gender: ").strip(),
+        "occupation": input("Enter occupation: ").strip(),
     }
-    database['entries'].append(entry)
 
-def check_entry_presence(value):
-    for num, entry in enumerate(database['entries']):
-        if entry[value[0]] == value[1]:
-            return 1
-    return 0
 
-def search_entry(value):
-    for num, entry in enumerate(database['entries']):
-        if entry[value[0]] == value[1]:
-            return entry
-
-def update_entry(value, updated_entry):
-    for num, entry in enumerate(database['entries']):
-        if entry[value[0]] == value[1]:
-            database['entries'][num] == updated_entry
-
-def delete_entry(value):
-    for num, entry in enumerate(database['entries']):
-        if entry[value[0]] == value[1]:
-            database['entries'].remove(entry)
-
-def display_entry(entry):
-    print(f"SRNO: {entry['srno']}")
-    print(f"Name: {entry['name']}")
-    print(f"Age: {entry['age']}")
-    print(f"Gender: {entry['gender']}")
-    print(f"Occupation: {entry['occupation']}\n")
-
-def display_all_entries():
-    for entry in database["entries"]:
-        display_entry(entry)
-
-def select_entry_and_value():
-    value_type = ''
-    value = ''
-    while 1:
-        print('Choose an entry based on which to search entries in database: ')
-        print("1. srno")
-        print("2. name")
-        print("3. age")
-        print("4. gender")
-        print("5. occupation")
+def get_search_criteria() -> Optional[tuple[str, str]]:
+    """Handles user input to select a search field and value."""
+    options = ["srno", "name", "age", "gender", "occupation"]
+    print("\nSelect a field to search by:")
+    for i, opt in enumerate(options, start=1):
+        print(f"{i}. {opt.capitalize()}")
+    
+    try:
         choice = int(input("Enter your choice: "))
-        if choice < 1 or choice > 5:
-            print("Invalid input...please try again")
-        else:
+        if 1 <= choice <= len(options):
+            key = options[choice - 1]
+            value = input(f"Enter {key} to search: ").strip()
+            return key, value
+    except ValueError:
+        print("Invalid input.")
+    return None
+
+
+# -----------------------------
+# Main Application
+# -----------------------------
+def main():
+    db = UserDatabase()
+    print("===== Welcome To User Management System (Optimized) =====")
+
+    while True:
+        print("\nWhat would you like to do:")
+        print("1. Add an entry")
+        print("2. Update an entry")
+        print("3. Delete an entry")
+        print("4. Search an entry")
+        print("5. Display all entries")
+        print("6. Exit")
+
+        try:
+            choice = int(input("Enter your choice: "))
+        except ValueError:
+            print("⚠️ Invalid input! Please enter a number.")
+            continue
+        
+        try:
             if choice == 1:
-                value_type = SRNO
-                value = input("Enter serial number to search: ")
-                return (value_type, value)
+                user_data = get_user_input()
+                db.add_user(**user_data)
+                print("✅ Entry successfully added.")
+                
             elif choice == 2:
-                value_type = NAME
-                value = input("Enter name to search: ")
-                return (value_type, value)
+                search_tuple = get_search_criteria()
+                if search_tuple:
+                    key, value = search_tuple
+                    print('Enter the updated details:-')
+                    new_data = get_user_input()
+                    if db.update_user(key, value, new_data):
+                        print("✅ Entry successfully updated.")
+                    else:
+                        print("⚠️ Update failed. Entry not found or invalid data provided.")
+                        
             elif choice == 3:
-                value_type = AGE
-                value = input("Enter age to search: ")
-                return (value_type, value)
+                search_tuple = get_search_criteria()
+                if search_tuple:
+                    key, value = search_tuple
+                    if db.delete_user(key, value):
+                        print("✅ Entry successfully deleted.")
+                    else:
+                        print("⚠️ Deletion failed. Entry not found.")
+                        
             elif choice == 4:
-                value_type = GENDER
-                value = input("Enter gender to search: ")
-                return (value_type, value)
+                search_tuple = get_search_criteria()
+                if search_tuple:
+                    key, value = search_tuple
+                    user = db.find_user(key, value)
+                    if user:
+                        db.display_user(user)
+                    else:
+                        print("⚠️ No entry found matching the criteria.")
+                        
             elif choice == 5:
-                value_type = OCCUPATION
-                value = input("Enter occupation to search: ")
-                return (value_type, value)
+                db.display_all()
+                
+            elif choice == 6:
+                print("👋 Exiting User Management System. Goodbye!")
+                break
+                
+            else:
+                print("Invalid option. Please enter a number between 1 and 6.")
+                
+        except Exception as e:
+            # Catching generic errors for robustness in the main loop
+            print(f"An unexpected application error occurred: {e}")
 
-def get_entry_details():
-    output = {}
-    output[NAME] = input("Enter name: ")
-    output[AGE] = input("Enter age: ")
-    output[GENDER] = input("Enter gender: ")
-    output[OCCUPATION] = input("Enter occupation: ")
-    return output
 
-print("===== Welcome To User Management System =====")
-while 1:
-    print("\nWhat would you like to do:-")
-    print("1. Add an entry")
-    print("2. Update an entry")
-    print("3. Delete an entry")
-    print("4. Search an entry")
-    print("5. Display all entries")
-    print("6. Exit")
-    choice = int(input("Enter your choice: "))
-    if choice > 7 or choice < 1:
-        print("Invalid input...please try again")
-    else:
-        if choice == 1:
-            print("Enter details for the new entry:-")
-            entry = get_entry_details()
-            add_entry(entry)
-            print("Entry successfully created...")
-        elif choice == 2:
-            value = select_entry_and_value()
-            print('Enter the details of the updated entry:-')
-            entry = get_entry_details()
-            update_entry(value, entry)
-            print("Entry successfully updated...")
-        elif choice == 3:
-            value = select_entry_and_value()
-            delete_entry(value)
-            print("Entry successfully deleted...")
-        elif choice == 4:
-            value = select_entry_and_value()
-            entry = search_entry(value)
-            display_entry(entry)
-        elif choice == 5:
-            display_all_entries()
-        elif choice == 6:
-            print('Exiting')
-            break
+if __name__ == "__main__":
+    main()
