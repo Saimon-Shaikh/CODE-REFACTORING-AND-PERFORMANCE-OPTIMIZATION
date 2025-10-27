@@ -107,6 +107,8 @@ The refactoring process involved a complete overhaul of the code's structure and
 
 * **Problem Before Refactoring:** Operations relying on the unique serial number (`srno`) required iterating through the entire list of users, leading to **Linear Time Complexity ($O(n)$)**.
 
+  <img width="817" height="119" alt="Image" src="https://github.com/user-attachments/assets/8411a15a-3cd0-4adc-8f20-10961801a1a1" />
+
 * **Problem Snippet (Conceptual $O(n)$):**
     ```python
     # The search loop must check every 'entry' in 'database['entries']'
@@ -116,6 +118,8 @@ The refactoring process involved a complete overhaul of the code's structure and
     ```
 
 * **Refactored Solution:** The `UserDatabase` class now maintains a secondary lookup structure: `self.srno_index: Dict[int, User]`. The `find_user` method checks this index first.
+
+  <img width="817" height="400" alt="Image" src="https://github.com/user-attachments/assets/8e896c46-69b4-4228-b28f-696796636b41" />
 
 * **Solution Snippet (Optimized $O(1)$):**
     ```python
